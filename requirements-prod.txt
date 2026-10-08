@@ -5,3 +5,7 @@ psycopg2-binary
 pydantic
 pydantic-settings
 python-multipart
+langchain
+langchain-core
+langchain-openai
+langchain-community

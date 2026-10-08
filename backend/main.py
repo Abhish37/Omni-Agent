@@ -46,9 +46,26 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.post("/ask")
 async def ask_question(query: str = Form(...)):
-    # Mock SQL agent response
-    time.sleep(1)
-    return {
-        "status": "success",
-        "answer": f"I analyzed the database for '{query}'. The total anomalous spending is $4,230.12 across 3 vendors."
-    }
+    try:
+        from agents.sql_agent.agent import SQLQueryAgent
+        from langchain_core.messages import HumanMessage
+        
+        agent = SQLQueryAgent()
+        initial_state = {
+            "messages": [HumanMessage(content=query)],
+            "next_agent": None,
+            "extracted_entities": None,
+            "final_response": None
+        }
+        
+        result_state = agent.invoke(initial_state)
+        
+        return {
+            "status": "success",
+            "answer": result_state.get("final_response", "Sorry, I couldn't find an answer.")
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "answer": f"Error querying database: {str(e)}. Make sure OPENAI_API_KEY is set in Render environment variables."
+        }
