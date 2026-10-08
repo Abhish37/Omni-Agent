@@ -1,0 +1,53 @@
+name: LLMOps Evaluation Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  LANGCHAIN_TRACING_V2: "true"
+  LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+  LANGCHAIN_PROJECT: "omni-agent-ci"
+
+jobs:
+  evaluate-agents:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: omni_agent
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install deepeval ragas pytest
+
+      - name: Run DeepEval (SQL Agent)
+        run: pytest ml/evaluation/test_sql_agent.py
+
+      - name: Run Ragas (RAG Agent)
+        run: pytest ml/evaluation/test_rag_agent.py
