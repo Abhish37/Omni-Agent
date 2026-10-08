@@ -10,7 +10,7 @@ class SQLQueryAgent:
         # (Assuming the main URI works, ideally use a specific read-only user/URI)
         self.db = SQLDatabase.from_uri(settings.SQLALCHEMY_DATABASE_URI)
         
-        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0)
+        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest", temperature=0)
         
         self.agent = create_sql_agent(
             llm=self.llm,
