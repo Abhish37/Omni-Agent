@@ -31,8 +31,15 @@ class SQLQueryAgent:
         # Self-correction is inherently handled by LangChain's SQL agent handle_parsing_errors
         response = self.agent.invoke({"input": last_message})
         
+        # Ensure the output is a string (sometimes Langchain returns AIMessage objects)
+        final_output = response["output"]
+        if hasattr(final_output, "content"):
+            final_output = final_output.content
+        elif not isinstance(final_output, str):
+            final_output = str(final_output)
+            
         # Update the state with the SQL agent's findings
         return {
-            "final_response": response["output"],
+            "final_response": final_output,
             "next_agent": "FINISH"  # Route back to supervisor or end
         }
