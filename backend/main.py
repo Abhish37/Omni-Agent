@@ -67,5 +67,5 @@ async def ask_question(query: str = Form(...)):
     except Exception as e:
         return {
             "status": "error",
-            "answer": f"Error querying database: {str(e)}. Make sure OPENAI_API_KEY is set in Render environment variables."
+            "answer": f"Error querying database: {str(e)}. Make sure GOOGLE_API_KEY is set in Render environment variables."
         }

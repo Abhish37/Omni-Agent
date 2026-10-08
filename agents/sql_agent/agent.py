@@ -1,6 +1,6 @@
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_community.utilities import SQLDatabase
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from agents.state import MultiAgentState
 from backend.core.config import settings
 
@@ -10,13 +10,13 @@ class SQLQueryAgent:
         # (Assuming the main URI works, ideally use a specific read-only user/URI)
         self.db = SQLDatabase.from_uri(settings.SQLALCHEMY_DATABASE_URI)
         
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
+        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0)
         
         self.agent = create_sql_agent(
             llm=self.llm,
             toolkit=None,  # We would inject SQLDatabaseToolkit here
             db=self.db,
-            agent_type="openai-tools",
+            agent_type="openai-tools",  # Works with Gemini tool calling too
             verbose=True,
             handle_parsing_errors=True
         )
