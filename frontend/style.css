@@ -1,0 +1,184 @@
+:root {
+    --bg-dark: #0a0a0f;
+    --text-main: #f0f0f5;
+    --accent-glow: #6366f1;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Background Animated Orbs */
+.background-orbs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.5;
+    animation: float 15s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: #6366f1;
+    top: -100px;
+    left: -100px;
+}
+
+.orb-2 {
+    width: 300px;
+    height: 300px;
+    background: #ec4899;
+    bottom: -50px;
+    right: -100px;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 200px;
+    height: 200px;
+    background: #14b8a6;
+    top: 40%;
+    left: 40%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(50px, 50px) scale(1.1); }
+}
+
+header {
+    margin-top: 60px;
+    text-align: center;
+    z-index: 10;
+}
+
+header h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+header h1 span {
+    background: linear-gradient(90deg, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #9ca3af;
+    margin-top: 10px;
+}
+
+.pipeline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+    width: 100%;
+    max-width: 800px;
+    z-index: 10;
+}
+
+/* Glassmorphism utility */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+}
+
+.node {
+    width: 350px;
+    padding: 24px;
+    text-align: center;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.node.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.node:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.15);
+}
+
+.node .icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.node h2 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.node p {
+    font-size: 0.95rem;
+    color: #a1a1aa;
+    font-weight: 300;
+}
+
+/* Connectors */
+.connector {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent-glow) 0%, transparent 100%);
+    margin: 10px 0;
+    opacity: 0.7;
+}
+
+.bottom-nodes {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.bottom-node {
+    width: 280px;
+}
+
+footer {
+    margin-top: 80px;
+    margin-bottom: 30px;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 300;
+}

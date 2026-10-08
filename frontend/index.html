@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni-Agent Pipeline</title>
+    <meta name="description" content="Live dashboard for the Omni-Agent architecture process.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <header>
+        <h1>Omni-Agent <span>Intelligence</span></h1>
+        <p>End-to-End Automated Data Processing & Anomaly Detection</p>
+    </header>
+
+    <main class="pipeline-container">
+        
+        <div class="node glass" id="node-vision">
+            <div class="icon">👁️</div>
+            <h2>1. Vision Agent</h2>
+            <p>Extracts raw data and JSON directly from receipts and documents.</p>
+        </div>
+
+        <div class="connector"></div>
+
+        <div class="node glass" id="node-classify">
+            <div class="icon">📄</div>
+            <h2>2. Document Classifier</h2>
+            <p>Sorts inputs using Machine Learning models.</p>
+        </div>
+
+        <div class="connector"></div>
+
+        <div class="node glass" id="node-anomaly">
+            <div class="icon">⚠️</div>
+            <h2>3. Anomaly Detector</h2>
+            <p>Scores transactions for risk and highlights outliers.</p>
+        </div>
+
+        <div class="connector split-left"></div>
+        <div class="connector split-right"></div>
+
+        <div class="bottom-nodes">
+            <div class="node glass bottom-node" id="node-sql">
+                <div class="icon">🤖</div>
+                <h2>4a. SQL Agent</h2>
+                <p>Natural language querying over the database.</p>
+            </div>
+
+            <div class="node glass bottom-node" id="node-powerbi">
+                <div class="icon">📊</div>
+                <h2>4b. Power BI</h2>
+                <p>Real-time views and executive dashboards.</p>
+            </div>
+        </div>
+
+    </main>
+    
+    <footer>
+        <p>Powered by FastAPI, Docker, and PostgreSQL</p>
+    </footer>
+
+    <script>
+        // Simple animation sequencer
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodes = document.querySelectorAll('.node');
+            nodes.forEach((node, index) => {
+                setTimeout(() => {
+                    node.classList.add('active');
+                }, index * 400 + 200);
+            });
+        });
+    </script>
+</body>
+</html>
