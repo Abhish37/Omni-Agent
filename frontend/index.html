@@ -20,6 +20,26 @@
         <p>End-to-End Automated Data Processing & Anomaly Detection</p>
     </header>
 
+    <div class="interactive-panel glass">
+        <div class="upload-section">
+            <h3>📥 Upload Document</h3>
+            <div class="upload-box">
+                <input type="file" id="fileInput" class="file-input">
+                <button id="uploadBtn" class="btn primary-btn">Process Document</button>
+            </div>
+            <p id="uploadResult" class="result-text"></p>
+        </div>
+        
+        <div class="search-section">
+            <h3>🤖 Ask SQL Agent</h3>
+            <div class="search-box">
+                <input type="text" id="searchInput" class="text-input" placeholder="e.g., What are our top anomalies?">
+                <button id="searchBtn" class="btn secondary-btn">Ask</button>
+            </div>
+            <p id="searchResult" class="result-text"></p>
+        </div>
+    </div>
+
     <main class="pipeline-container">
         
         <div class="node glass" id="node-vision">
@@ -68,14 +88,78 @@
     </footer>
 
     <script>
+        const API_URL = "https://omni-agent-api-v2.onrender.com";
+
         // Simple animation sequencer
         document.addEventListener('DOMContentLoaded', () => {
-            const nodes = document.querySelectorAll('.node');
+            const nodes = document.querySelectorAll('.node, .interactive-panel');
             nodes.forEach((node, index) => {
                 setTimeout(() => {
                     node.classList.add('active');
-                }, index * 400 + 200);
+                }, index * 300 + 100);
             });
+        });
+
+        // Upload functionality
+        document.getElementById('uploadBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('fileInput');
+            const resultBox = document.getElementById('uploadResult');
+            
+            if (!fileInput.files[0]) {
+                resultBox.textContent = "Please select a file first.";
+                return;
+            }
+
+            resultBox.innerHTML = "<span class='loading'>Processing with Vision Agent...</span>";
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch(`${API_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                resultBox.innerHTML = `✅ <b>Success:</b> ${data.message}`;
+                
+                // Light up the vision node
+                document.getElementById('node-vision').style.borderColor = '#6366f1';
+                document.getElementById('node-vision').style.boxShadow = '0 0 20px #6366f1';
+            } catch (error) {
+                resultBox.textContent = "❌ Error connecting to API.";
+            }
+        });
+
+        // Ask functionality
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const searchInput = document.getElementById('searchInput');
+            const resultBox = document.getElementById('searchResult');
+            
+            if (!searchInput.value.trim()) {
+                resultBox.textContent = "Please ask a question.";
+                return;
+            }
+
+            resultBox.innerHTML = "<span class='loading'>Querying Database...</span>";
+            
+            const formData = new FormData();
+            formData.append('query', searchInput.value);
+
+            try {
+                const response = await fetch(`${API_URL}/ask`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                resultBox.innerHTML = `🤖 <b>Agent says:</b> ${data.answer}`;
+                
+                // Light up SQL node
+                document.getElementById('node-sql').style.borderColor = '#ec4899';
+                document.getElementById('node-sql').style.boxShadow = '0 0 20px #ec4899';
+            } catch (error) {
+                resultBox.textContent = "❌ Error connecting to API.";
+            }
         });
     </script>
 </body>
